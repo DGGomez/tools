@@ -1,0 +1,14 @@
+{
+    "obj":[
+        {"new_name": "tes43t", "wow":"wow"},
+        {"new_name":"tes234tt", "obj2": [{"here":"name"}]}
+        ],
+    "multi":{"name":"tehy4wtst", "wow":"wow", "fina":"fina"},
+    "powers": [
+        "Immortality",
+        "Heat Immunity",
+        "Inferno",
+        "Teleportation",
+        "Interdimensional travel"
+      ]
+}

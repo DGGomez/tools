@@ -1,0 +1,42 @@
+[{"title": "AFN",
+  "dividen": 4.55,
+  "price": 53.18
+},
+ {"title":"BCE",
+  "dividen": 5.29,
+  "price": 60.18
+ },
+  {"title":"BNS",
+  "dividen": 4.78,
+  "price": 70.64
+ },
+  {"title":"ENB",
+  "dividen": 6.27,
+  "price": 48.08
+   
+ },
+  {"title":"MFC",
+  "dividen": 4.13,
+  "price": 24.04
+ },
+  {"title":"REI.UN",
+  "dividen": 5.44,
+  "price": 26.60
+ },
+  {"title":"TRP",
+  "dividen": 4.63,
+  "price": 66.56
+ },
+  {"title":"VFV",
+  "dividen": 1.64,
+  "price": 69.36
+ },
+  {"title":"CM",
+  "dividen": 5.40,
+  "price": 103.12
+ },
+  {"title":"BAM",
+  "dividen": 1.01,
+  "price": 63.81
+ }
+]

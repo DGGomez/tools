@@ -1,0 +1,12 @@
+{
+  "name": "max-money",
+  "version": "1.0.0",
+  "description": "According to stats as the current richest man in the world, Jeff Bezos, became the richest the number of billionaries decreased.  So that brings the question is there a finite amount of money out there? How much can one person own? Can I track how many billionaries there are based on the amount of money the richest man has?",
+  "main": "index.js",
+  "scripts": {
+    "start":"node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
