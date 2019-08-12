@@ -1,0 +1,315 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: "BinRange-sandbox"
+basePath: "/"
+schemes:
+- "https"
+paths:
+  "/esbapi/creditCard/creditCardUtility/v3/getBINRanges":
+    get:
+      operationId: "getBINRanges"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "HeaderRequest" 
+        in: "header" 
+        description: "pass the json string using definition (#/definitions/APIHeaderRequest)" 
+        type: "string" 
+        required: true 
+      responses:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/SuccessResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            x-request-id:
+              type: "string"
+            x-client-id:
+              type: "string"
+            x-refresh-token:
+              type: "string"
+            x-access-token:
+              type: "string"
+        400:
+          description: "400 response"
+          schema:
+            $ref: "#/definitions/response"
+          headers:
+            x-request-id:
+              type: "string"
+        500:
+          description: "500 response"
+          schema:
+            $ref: "#/definitions/response"
+          headers:
+            x-request-id:
+              type: "string"
+        503:
+          description: "503 response"
+          schema:
+            $ref: "#/definitions/response"
+          headers:
+            x-request-id:
+              type: "string"
+        404:
+          description: "404 response"
+          schema:
+            $ref: "#/definitions/response"
+          headers:
+            x-request-id:
+              type: "string"
+        504:
+          description: "504 response"
+          schema:
+            $ref: "#/definitions/response"
+          headers:
+            x-request-id:
+              type: "string"
+      security:
+                - api_key: []
+      x-amazon-apigateway-request-validator: "Validate body, query string parameters,\\ and headers"
+      x-amazon-apigateway-integration:
+        uri: "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/arn:aws:lambda:us-east-1:520049198415:function:sccg-binrange-lambda/invocations"
+        #uri: Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${handleTransaction.Arn}/invocations
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        contentHandling: "CONVERT_TO_TEXT"
+        type: "aws_proxy"
+        securityDefinitions:
+            api_key:
+              type: "apiKey"
+              name: "x-api-key"
+              in: "header"
+definitions:
+  SuccessResult:
+    type: "object"
+    required:
+    - "code"
+    - "messages"
+    - "status"
+    properties:
+      code:
+        type: "string"
+        description: "Contains the API response code e.g. 200, 500 etc"
+      status:
+        type: "string"
+        description: "Status e.g."
+        enum:
+        - "SUCCESS"
+        - "PARTIAL"
+        - "FAILURE"
+      messages:
+        type: "array"
+        description: "Contains the response fault message i.e. 'Bad Request', 'Internal\
+          \ Server Error' etc"
+        items:
+          type: "object"
+          required:
+          - "lowBIN"
+          properties:
+            lowBIN:
+              type: "string"
+            highBIN:
+              type: "string"
+            icaNumber:
+              type: "string"
+            cardType:
+              type: "string"
+            owningSystem:
+              type: "string"
+            transitBank:
+              type: "string"
+            clientID:
+              type: "string"
+            productCode:
+              type: "string"
+            currencyCode:
+              type: "string"
+            LOB:
+              type: "string"
+            accessType:
+              type: "string"
+            ownerDescription:
+              type: "string"
+            lastUpdate:
+              type: "string"
+            v_1:
+              type: "string"
+  result:
+    type: "object"
+    required:
+    - "code"
+    - "messages"
+    - "status"
+    properties:
+      code:
+        type: "string"
+        description: "Contains the API response code e.g. 200, 500 etc"
+      status:
+        type: "string"
+        description: "Status e.g."
+        enum:
+        - "SUCCESS"
+        - "PARTIAL"
+        - "FAILURE"
+      messages:
+        type: "array"
+        description: "Contains the response fault message i.e. 'Bad Request', 'Internal\
+          \ Server Error' etc"
+        items:
+          type: "string"
+          
+  response:
+    type: "object"
+    required:
+    - "result"
+    properties:
+      result:
+        $ref: "#/definitions/result"
+        
+  SuccessResponse:
+    type: "object"
+    required:
+    - "result"
+    properties:
+      result:
+        $ref: "#/definitions/SuccessResult"
+        
+x-amazon-apigateway-gateway-responses: 
+          API_CONFIGURATION_ERROR: 
+            statusCode: 500 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"500\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          THROTTLED: 
+            statusCode: 429 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"429\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          UNSUPPORTED_MEDIA_TYPE: 
+            statusCode: 415 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"415\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          ACCESS_DENIED: 
+            statusCode: 403 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"403\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          BAD_REQUEST_PARAMETERS: 
+            statusCode: 400 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"400\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          UNAUTHORIZED: 
+            statusCode: 401 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"401\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          AUTHORIZER_CONFIGURATION_ERROR: 
+            statusCode: 500 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"500\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          INVALID_SIGNATURE: 
+            statusCode: 403 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"403\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          QUOTA_EXCEEDED: 
+            statusCode: 429 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"429\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          REQUEST_TOO_LARGE: 
+            statusCode: 413 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"413\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          INTEGRATION_FAILURE: 
+            statusCode: 504 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"504\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          INTEGRATION_TIMEOUT: 
+            statusCode: 504 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"504\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          BAD_REQUEST_BODY: 
+            statusCode: 400 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"400\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          RESOURCE_NOT_FOUND: 
+            statusCode: 404 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"404\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          MISSING_AUTHENTICATION_TOKEN: 
+            statusCode: 403 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"403\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          AUTHORIZER_FAILURE: 
+            statusCode: 500 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"500\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          EXPIRED_TOKEN: 
+            statusCode: 403 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"403\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+          INVALID_API_KEY: 
+            statusCode: 403 
+            responseTemplates: 
+              application/json: "{\n    \"result\": {\n        \"code\": \"403\",\n      \ 
+                \  \"status\": \"Failure\",\n        \"messages\": [$context.error.messageString]\n\ 
+                \    }\n}" 
+                
+x-amazon-apigateway-policy:
+  Version: "2012-10-17"
+  Statement:
+  - Effect: "Allow"
+    Principal: "*"
+    Action: "execute-api:Invoke"
+    Resource: "arn:aws:execute-api:us-east-1:520049198415:*"
+    Condition: 
+      StringEquals: 
+        aws:SourceVpc: "vpc-ad3a07d5"
+  - Effect: "Allow"
+    Principal: "*"
+    Action: "lambda:InvokeFunction"
+    Resource: "arn:aws:lambda:us-east-1:520049198415:function:sccg-binrange-lambda"
+
+x-amazon-apigateway-request-validators:
+  Validate body, query string parameters, and headers:
+    validateRequestParameters: true
+    validateRequestBody: true

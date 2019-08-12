@@ -1,0 +1,19 @@
+{
+  "name": "swagger-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^3.0.0",
+    "figlet": "^1.2.3",
+    "inquirer": "^6.5.0",
+    "js-yaml": "^3.13.1"
+  }
+}
