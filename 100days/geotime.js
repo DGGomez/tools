@@ -13,6 +13,7 @@ function DisplayCityTime(city, offset) {
 }
 
 // input city
+
 // find offset
 
 alert(DisplayCityTime('Montreal', '-5'));
